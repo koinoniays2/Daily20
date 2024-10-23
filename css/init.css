@@ -1,0 +1,19 @@
+@font-face {
+    font-family: "NotoSans";
+    src: url("../font/NotoSans-Regular.ttf") format("truetype");
+}
+* { margin: 0; padding: 0; box-sizing: border-box;
+    list-style: none; text-decoration: none; color: #353535;
+    font-family: "NotoSans", sans-serif;
+    font-size: 16px;
+}
+.hidden_text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
