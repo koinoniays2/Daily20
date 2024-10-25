@@ -90,16 +90,15 @@
 .login_box > div:nth-child(2) {
     padding-top: 2rem;
 }
-.login_box > div:nth-child(1) > span,
-.login_box > div:nth-child(2) > span {
-    color: #BBB;
+.login_box input {
+    padding: 0.5rem 0;
 }
 .login_btn {
     padding-top: 2rem;
     display: flex;
     justify-content: center;
 }
-.login_btn > span {
+.login_btn > button {
     background-color: #9FA9D8;
     color: #F6F6F6;
     padding: 0.25rem 3rem;
@@ -112,7 +111,7 @@
     text-align: center;
     font-size: 0.875rem;
 }
-.join_btn > span {
+.join_btn > button {
     color: #E7852C;
 }
 .login_box > img {
