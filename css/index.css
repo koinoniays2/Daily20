@@ -9,11 +9,6 @@
 }
 #main {
     padding: 4rem 1rem;
-    background-color: #568769;
-    overflow: scroll;
-    display: flex;
-    justify-content: center;
-    height: 100vh;
 }
 .login_container {
     padding: 1rem;
