@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <link href="css/init.css" rel="stylesheet" type="text/css" />
+    <link href="css/join.css" rel="stylesheet" type="text/css" />
+    <script src="https://kit.fontawesome.com/96b5911d82.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <main id="main">
+        <section class="join_container container">
+            <form class="join_box">
+                <div class="id_box">
+                    <input type="text" name="id" id="id" placeholder="아이디" />
+                    <button type="button">중복확인</button>
+                </div>
+                <div class="password_box">
+                    <input type="password" name="password" id="password" placeholder="비밀번호" />
+                    <input type="checkbox" id="password_show"/>
+                    <label for="password_show">
+                        <i class="fa-regular fa-eye-slash"></i>
+                    </label>
+                </div>
+                <div class="phone_box">
+                    <input type="text" name="phone" id="phone" placeholder="휴대폰번호"/>
+                </div>
+                <span class="phone_error">형식을 지켜주세요.(예: 000-0000-0000)</span>
+                <div class="name_box">
+                    <input type="text" name="name" id="name" placeholder="이름"/>
+                </div>
+                <div class="email_box">
+                    <input type="email" name="email" id="email" placeholder="이메일"/>
+                </div>
+                <span class="email_error">형식을 지켜주세요.(예: example@example.com)</span>
+                <div class="next_btn">
+                    <button type="button">회원가입</button>
+                </div>
+            </form>
+        </section>
+    </main>
+    <script src="js/join.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

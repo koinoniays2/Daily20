@@ -1,0 +1,42 @@
+#main {
+    align-items: center;
+}
+.join_container {
+    width: 100%;
+}
+.join_box {
+    width: 100%;
+}
+.join_box input::placeholder {
+    color: #9CD9AD;
+}
+.join_box input {
+    padding: 0.5rem 0;
+    color: #F6F6F6;
+    width: 100%;
+}
+.join_box span {
+    color: #9FA9D8;
+    font-size: 0.875rem;
+    display: none;
+}
+.password_box, .id_box {
+    display: flex;
+    align-items: center;
+}
+.id_box > button {
+    padding: 0.25rem;
+    width: 100px;
+    border-radius: 6px;
+    border: 2px solid #9FA9D8;
+    color: #F6F6F6;
+}
+.password_box i {
+    color: #F6F6F6;
+}
+#password_show {
+    display: none;
+}
+.next_btn > button {
+    background-color: #9FA9D8;
+}

@@ -1,4 +1,6 @@
 window.addEventListener("load", function() {
+    sessionStorage.removeItem("termsAgree");
+    
     const checkbox = document.querySelector("#check_box");
     const checkboxIcon = document.querySelector(".check_box_icon > i");
     const nextBtn = document.querySelector(".next_btn > button");
@@ -19,10 +21,6 @@ window.addEventListener("load", function() {
     });
     nextBtn.addEventListener("click", function() {
         termsSession("true");
-        window.location.href = "index.html";
+        window.location.href = "join_page.html";
     });
 });
-// 뒤로 가기 버튼 눌렀을 때 세션 스토리지 초기화
-window.onpopstate = function() {
-    sessionStorage.removeItem("termsAgree");
-};
