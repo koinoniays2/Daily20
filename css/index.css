@@ -15,7 +15,6 @@
     background-color: #CFA078;
     position: relative;
     width: 100%;
-    max-width: 360px;
     height: fit-content;
 }
 .login_container > img {

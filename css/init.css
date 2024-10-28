@@ -49,6 +49,7 @@ button {
 }
 .container {
     padding: 1rem;
+    max-width: 460px;
 }
 .next_btn {
     padding: 1rem;
