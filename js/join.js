@@ -1,8 +1,15 @@
 window.addEventListener("load", function() {
     const termsAgree = sessionStorage.getItem("termsAgree");
     if (termsAgree !== "true") {
-        alert("비정상적인 접근입니다. 이용약관에 동의해야 합니다.");
-        window.location.href = "terms_page.html";
+        Swal.fire({
+            icon: "error",
+            text: "비정상적인 접근입니다. 이용약관에 동의해야 합니다.",
+            confirmButtonColor: "#9FA9D8"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "index.html";
+            };
+        });
     };
     const showPassword = document.querySelector("#password_show");
     const eye = document.querySelector(".fa-eye-slash");
@@ -14,12 +21,44 @@ window.addEventListener("load", function() {
     const phoneError = document.querySelector(".phone_error");
     const emailError = document.querySelector(".email_error");
     const joinBtn = document.querySelector(".next_btn > button");
+    const idCheckBtn = document.querySelector(".id_box > button");
 
     let isIdChecked = false;
     let isEmailChecked = false;
     let isPhoneChecked = false;
+    // sweetAlert
+    function sweetAlert(state, text) {
+        Swal.fire({
+            icon: state,
+            text: text,
+            confirmButtonColor: "#9FA9D8"
+        });
+    };
     // 아이디 중복체크
+    idCheckBtn.addEventListener("click", async function() {
+        const userId = id.value.trim();
+        if(!userId) sweetAlert("error", "아이디를 입력하세요.");
+        try {
+            const response = await fetch("https://server-rose-one.vercel.app/join/idCheck", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ userId })
+            });
+            if (!response.ok) throw new Error("서버 응답 에러");
 
+            const data = await response.json();
+    
+            if (data.result) {
+                sweetAlert("success", "사용 가능한 아이디입니다.");
+            } else {
+                sweetAlert("error", "이미 사용 중인 아이디입니다.");
+            };
+        } catch (error) {
+            console.error(error);
+        }
+    });
     // 패스워드 보이기
     showPassword.addEventListener("change", function() {
         const isChecked = showPassword.checked;
@@ -51,22 +90,14 @@ window.addEventListener("load", function() {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         isEmailChecked = validateInput(email, regex, emailError, isEmailChecked);
     });
-    // sweetAlert
-    function sweetAlert(icon, text, confirmButtonColor) {
-        Swal.fire({
-            icon: icon,
-            text: text,
-            confirmButtonColor: confirmButtonColor
-        });
-    }
     // 회원가입 버튼
     joinBtn.addEventListener("click", function(){
         if([id.value, password.value, phone.value, name.value, email.value].some(val => val === "")) {
-            sweetAlert("error", "빈 칸을 확인해 주세요.", "#9FA9D8");
+            sweetAlert("error", "빈 칸을 확인해 주세요.");
         }else if(!isPhoneChecked) {
-            sweetAlert("error", "휴대폰 번호 양식을 확인해 주세요.", "#9FA9D8");
+            sweetAlert("error", "휴대폰 번호 양식을 확인해 주세요.");
         }else if(!isEmailChecked) {
-            sweetAlert("error", "이메일 양식을 확인해 주세요.", "#9FA9D8");
+            sweetAlert("error", "이메일 양식을 확인해 주세요.");
         };
     });
 });
