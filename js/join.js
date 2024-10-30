@@ -18,11 +18,13 @@ window.addEventListener("load", function() {
     const email = document.querySelector("#email");
     const id = document.querySelector("#id");
     const name = document.querySelector("#name");
+    const idError = document.querySelector(".id_error");
     const phoneError = document.querySelector(".phone_error");
     const emailError = document.querySelector(".email_error");
     const joinBtn = document.querySelector(".next_btn > button");
     const idCheckBtn = document.querySelector(".id_box > button");
 
+    let isIdErrorChecked = false;
     let isIdChecked = false;
     let isEmailChecked = false;
     let isPhoneChecked = false;
@@ -37,7 +39,14 @@ window.addEventListener("load", function() {
     // 아이디 중복체크
     idCheckBtn.addEventListener("click", async function() {
         const userId = id.value.trim();
-        if(!userId) sweetAlert("error", "아이디를 입력하세요.");
+        if(!isIdErrorChecked && userId) {
+            sweetAlert("error", "아이디 형식을 확인해 주세요.");
+            return
+        };
+        if(!userId) {
+            sweetAlert("error", "아이디를 입력하세요.");
+            return
+        };
         try {
             const response = await fetch("https://server-rose-one.vercel.app/join/idCheck", {
                 method: "POST",
@@ -52,12 +61,14 @@ window.addEventListener("load", function() {
     
             if (data.result) {
                 sweetAlert("success", "사용 가능한 아이디입니다.");
+                isIdChecked = true;
             } else {
                 sweetAlert("error", "이미 사용 중인 아이디입니다.");
+                isIdChecked = false;
             };
         } catch (error) {
             console.error(error);
-        }
+        };
     });
     // 패스워드 보이기
     showPassword.addEventListener("change", function() {
@@ -80,6 +91,12 @@ window.addEventListener("load", function() {
         }
         return isChecked;
     }
+     // 아이디 양식 검증
+    id.addEventListener("input", function() {
+        const regex = /^[a-z][a-z0-9]{4,}$/;
+        isIdChecked = false; // 아이디 input란이 변할 때마다 중복체크 하기 위해
+        isIdErrorChecked = validateInput(id, regex, idError, isIdErrorChecked);
+    });
      // 휴대폰번호 양식 검증
     phone.addEventListener("input", function() {
         const regex = /^\d{3}-\d{3,4}-\d{4}$/;
@@ -94,10 +111,12 @@ window.addEventListener("load", function() {
     joinBtn.addEventListener("click", function(){
         if([id.value, password.value, phone.value, name.value, email.value].some(val => val === "")) {
             sweetAlert("error", "빈 칸을 확인해 주세요.");
+        }else if(!isIdChecked) {
+            sweetAlert("error", "아이디 중복 확인을 해주세요.");
         }else if(!isPhoneChecked) {
-            sweetAlert("error", "휴대폰 번호 양식을 확인해 주세요.");
+            sweetAlert("error", "휴대폰 번호 형식을 확인해 주세요.");
         }else if(!isEmailChecked) {
-            sweetAlert("error", "이메일 양식을 확인해 주세요.");
+            sweetAlert("error", "이메일 형식을 확인해 주세요.");
         };
     });
 });
