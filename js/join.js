@@ -53,7 +53,7 @@ window.addEventListener("load", function() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ userId })
+                body: JSON.stringify({ id : userId })
             });
             if (!response.ok) throw new Error("서버 응답 에러");
 
@@ -108,7 +108,7 @@ window.addEventListener("load", function() {
         isEmailChecked = validateInput(email, regex, emailError, isEmailChecked);
     });
     // 회원가입 버튼
-    joinBtn.addEventListener("click", function(){
+    joinBtn.addEventListener("click", async function(){
         if([id.value, password.value, phone.value, name.value, email.value].some(val => val === "")) {
             sweetAlert("error", "빈 칸을 확인해 주세요.");
         }else if(!isIdChecked) {
@@ -117,6 +117,38 @@ window.addEventListener("load", function() {
             sweetAlert("error", "휴대폰 번호 형식을 확인해 주세요.");
         }else if(!isEmailChecked) {
             sweetAlert("error", "이메일 형식을 확인해 주세요.");
+        };
+        try {
+            const response = await fetch("https://server-rose-one.vercel.app/join", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ 
+                    id : id.value.trim(),
+                    password : password.value,
+                    name : name.value.trim(),
+                    phone : phone.value.trim(),
+                    email : email.value.trim()
+                })
+            });
+            if (!response.ok) throw new Error("서버 응답 에러");
+
+            const data = await response.json();
+    
+            if (data.result) {
+                Swal.fire({
+                    icon: "success",
+                    text: "회원가입이 완료되었습니다.",
+                    confirmButtonColor: "#9FA9D8"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "index.html";
+                    };
+                });
+            };
+        } catch (error) {
+            console.error(error);
         };
     });
 });
