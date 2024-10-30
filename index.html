@@ -14,7 +14,7 @@
                 <span class="hidden_text">Daily20</span>
                 <img src="image/logo.svg" alt="로고" />
             </h1>
-            <!-- <div>menu</div> -->
+            <button type="button" class="menu">MY</button>
         </nav>
     </header>
     <main id="main">
@@ -23,7 +23,7 @@
             <img src="./image/낙서2.svg" src="낙서" />
             <img src="./image/낙서3.svg" src="낙서" />
             <img src="./image/낙서4.svg" src="낙서" />
-            <div class="login_wrapper">
+            <div class="login_wrapper wrapper">
                 <div class="postit_box">
                     <div>
                         <span>Daily 20</span>
@@ -37,13 +37,13 @@
                 </div>
                 <form class="login_box">
                     <div>
-                        <input placeholder="로그인" />
+                        <input name="id" id="id" placeholder="아이디" />
                     </div>
                     <div>
-                        <input placeholder="비밀번호"/>
+                        <input name="password" id="password" placeholder="비밀번호" type="password"/>
                     </div>
                     <div class="login_btn">
-                        <button type="submit">로그인</button>
+                        <button type="button">로그인</button>
                     </div>
                     <div class="join_btn">
                         회원이 아니시라면? 
@@ -52,8 +52,14 @@
                     <img src="image/pin.svg" src="pin" />
                 </form>
             </div>
+            <div class="user_wrapper wrapper">
+                <div class="logout_btn">
+                    <button type="button">로그아웃</button>
+                </div>
+            </div>
         </section>
     </main>
     <script src="./js/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

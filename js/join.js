@@ -29,10 +29,10 @@ window.addEventListener("load", function() {
     let isEmailChecked = false;
     let isPhoneChecked = false;
     // sweetAlert
-    function sweetAlert(state, text) {
+    function sweetAlert(icon, text) {
         Swal.fire({
-            icon: state,
-            text: text,
+            icon,
+            text,
             confirmButtonColor: "#9FA9D8"
         });
     };
