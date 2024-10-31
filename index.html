@@ -6,6 +6,7 @@
     <title>Daily20</title>
     <link href="css/init.css" rel="stylesheet" type="text/css" />
     <link href="css/index.css" rel="stylesheet" type="text/css" />
+    <script src="https://kit.fontawesome.com/96b5911d82.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <header id="header">
@@ -52,9 +53,43 @@
                     <img src="image/pin.svg" src="pin" />
                 </form>
             </div>
+        </section>
+        <section class="user_container container">
             <div class="user_wrapper wrapper">
                 <div class="logout_btn">
                     <button type="button">로그아웃</button>
+                </div>
+                <nav class="tool_bar">
+                    <div class="write_search">
+                        <i class="fa-regular fa-pen-to-square fa-xl"></i>
+                        <i class="fa-solid fa-magnifying-glass fa-xl"></i>
+                    </div>
+                    <div class="trash">
+                        <i class="fa-regular fa-trash-can fa-xl"></i>
+                    </div>
+                </nav>
+                <img class="line" src="./image/line.svg" alt="line" />
+                <div class="check_bar">
+                    <div class="order_check_box">
+                        <div>
+                            <input id="date_order" type="checkbox" />
+                            <label class="date_check" for="date_order">
+                                <i class="fa-solid fa-circle-check"></i> 날짜정렬
+                            </label>
+                        </div>
+                        <div>
+                            <input id="text_order" type="checkbox" />
+                            <label class="text_check" for="text_order">
+                                <i class="fa-solid fa-circle-check"></i> 문자정렬
+                            </label>
+                        </div>
+                    </div>
+                    <div class="all_check_box">
+                        <input id="all_check" type="checkbox"/>
+                        <label for="all_check">
+                            <i class="fa-solid fa-circle-check"></i> 전체선택
+                        </label>
+                    </div>
                 </div>
             </div>
         </section>

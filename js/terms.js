@@ -9,16 +9,12 @@ window.addEventListener("load", function() {
     };
     
     checkbox.addEventListener("change", function() {
-        if(checkbox.checked) {
-            checkboxIcon.style.color = "#9FA9D8";
-            nextBtn.style.backgroundColor = "#9FA9D8";
-            nextBtn.disabled = false;
-        } else{
-            checkboxIcon.style.color = "#999";
-            nextBtn.style.backgroundColor = "#999";
-            nextBtn.disabled = true;
-        };
+        let isChecked = checkbox.checked;
+        checkboxIcon.style.color = isChecked ? "#9FA9D8" : "#999";
+        nextBtn.style.backgroundColor = isChecked ? "#9FA9D8" : "#999";
+        nextBtn.disabled = !isChecked;
     });
+
     nextBtn.addEventListener("click", function() {
         termsSession("true");
         window.location.href = "join_page.html";

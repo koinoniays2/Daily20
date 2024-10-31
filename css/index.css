@@ -19,7 +19,7 @@
 #main {
     padding: 4rem 1rem;
 }
-.login_container {
+.container {
     border: 1px solid black;
     background-color: #CFA078;
     position: relative;
@@ -122,7 +122,55 @@
     left: 50%; transform: translateX(-50%);
 }
 
+/* 로그인 후 */
+.user_wrapper {
+    gap: 0;
+}
 .logout_btn {
     display: flex;
     justify-content: flex-end;
+    padding-bottom: 3.5rem;
+}
+/* .user_container, .user_wrapper {
+    height: 100%;
+    overflow-y: auto;
+}
+.user_container::-webkit-scrollbar,
+.user_wrapper::-webkit-scrollbar {
+    display: none;
+} */
+.tool_bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.tool_bar i {
+    color: #F6F6F6;
+    cursor: pointer;
+}
+.write_search {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.line {
+    padding: 0.5rem 0;
+}
+
+.check_bar {
+    display: flex;
+    justify-content: space-between;
+}
+.check_bar input {
+    display: none;
+}
+.check_bar label {
+    color: #F6F6F6;
+}
+.check_bar i {
+    color: #C2C2C2;
+}
+.order_check_box {
+    display: flex;
+    gap: 0.5rem;
 }
