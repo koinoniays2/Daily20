@@ -111,12 +111,16 @@ window.addEventListener("load", function() {
     joinBtn.addEventListener("click", async function(){
         if([id.value, password.value, phone.value, name.value, email.value].some(val => val === "")) {
             sweetAlert("error", "빈 칸을 확인해 주세요.");
+            return;
         }else if(!isIdChecked) {
             sweetAlert("error", "아이디 중복 확인을 해주세요.");
+            return;
         }else if(!isPhoneChecked) {
             sweetAlert("error", "휴대폰 번호 형식을 확인해 주세요.");
+            return;
         }else if(!isEmailChecked) {
             sweetAlert("error", "이메일 형식을 확인해 주세요.");
+            return;
         };
         try {
             const response = await fetch("https://server-rose-one.vercel.app/join", {
