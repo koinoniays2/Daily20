@@ -123,6 +123,9 @@
 }
 
 /* 로그인 후 */
+.user_container {
+    display: none;
+}
 .user_wrapper {
     gap: 0;
 }
