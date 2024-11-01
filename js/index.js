@@ -1,12 +1,12 @@
 window.addEventListener("load", function() {
     sessionStorage.removeItem("termsAgree");
     
-    const joinBtn = document.querySelector(".join_btn > button");
-    const loginBtn = document.querySelector(".login_btn > button");
+    // const menu = document.querySelector(".menu");
     const id = document.querySelector("#id");
     const password = document.querySelector("#password");
-    const menu = document.querySelector(".menu");
-    const logoutBtn = document.querySelector(".logout_btn > button");
+    const loginBtn = document.querySelector(".login_btn_box > button");
+    const joinBtn = document.querySelector(".join_box > button");
+    const logoutBtn = document.querySelector(".logout_btn_box > button");
     const userContainer = document.querySelector(".user_container");
     const loginContainer = document.querySelector(".login_container");
     const dateOrder = document.querySelector("#date_order");
@@ -33,7 +33,7 @@ window.addEventListener("load", function() {
     const token = localStorage.getItem("token");
     userContainer.style.display = token ? "block" : "none";
     loginContainer.style.display = token ? "none" : "block";
-    menu.style.display = token ? "block" : "none";
+    // menu.style.display = token ? "block" : "none";
 
     // 로그인
     loginBtn.addEventListener("click", async function() {
