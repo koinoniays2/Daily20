@@ -1,6 +1,3 @@
-#main {
-    align-items: center;
-}
 .join_container {
     width: 100%;
 }
@@ -34,9 +31,9 @@
 .password_box i {
     color: #F6F6F6;
 }
-#password_show {
+#password_show_check {
     display: none;
 }
-.next_btn > button {
+.btn_box > button {
     background-color: #9FA9D8;
 }

@@ -37,26 +37,29 @@ button {
     clip: rect(0, 0, 0, 0);
     border: 0;
 }
+/* -------------------------------------------------- */
 #main {
     background-color: #568769;
     height: 100vh;
-    overflow: scroll;
+    overflow: auto;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 #main::-webkit-scrollbar {
-    display: none; /* 스크롤바 숨김 */
+    /* 스크롤바 숨김 */
+    display: none; 
 }
 .container {
     padding: 1rem;
     max-width: 400px;
 }
-.next_btn {
+.btn_box {
     padding: 1rem;
     display: flex;
     justify-content: center;
 }
-.next_btn > button {
+.btn_box > button {
     background-color: #999;
     padding: 0.5rem 5rem;
     border-radius: 10px;

@@ -1,9 +1,9 @@
 window.addEventListener("load", function() {
     sessionStorage.removeItem("termsAgree");
     
-    const checkbox = document.querySelector("#check_box");
-    const checkboxIcon = document.querySelector(".check_box_icon > i");
-    const nextBtn = document.querySelector(".next_btn > button");
+    const checkbox = document.querySelector("#agree_check");
+    const checkboxIcon = document.querySelector(".check_icon > i");
+    const nextBtn = document.querySelector(".btn_box > button");
     function termsSession(boolean) {
         sessionStorage.setItem("termsAgree", boolean);
     };

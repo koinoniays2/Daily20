@@ -1,43 +1,39 @@
-#main {
-    align-items: center;
+.agree_box {
+    padding: 1rem 0;
 }
-
-.checkbox_wrapper {
-    padding: 1rem;
-}
-#check_box {
+#agree_check{
     display: none;
 }
-.check_box_icon > i {
+.check_icon > i {
     color: #999;
     padding-right: 0.5rem;
 }
-.check_box_icon > span {
+.check_icon > span {
     color: #F6F6F6;
 }
 
-.terms_wrapper {
+.terms_box {
     border: 1px solid #9CD9AD;
     border-radius: 5px;
 }
-.terms_wrapper > div {
-    height: 140px;
+.terms_box > div {
     overflow-y: scroll;
+    height: 160px;
     padding: 1rem;
     color: #F6F6F6;
 }
-.terms_wrapper > div::-webkit-scrollbar {
+.terms_box > div::-webkit-scrollbar {
     width: 8px;
 }
-.terms_wrapper > div::-webkit-scrollbar-track {
+.terms_box > div::-webkit-scrollbar-track {
     background: #9CD9AD; /* 스크롤바 배경 */
     border-radius: 10px;
 }
-.terms_wrapper > div::-webkit-scrollbar-thumb {
+.terms_box > div::-webkit-scrollbar-thumb {
     background: #CFA078; /* 스크롤바 색상 */
     border-radius: 10px;
 }
 
-.next_btn > button:disabled {
+.btn_box > button:disabled {
     cursor: not-allowed; /* 비활성화된 버튼에 대해 커서를 'not-allowed'로 설정 */
 }
