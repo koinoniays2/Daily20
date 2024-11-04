@@ -18,6 +18,7 @@ window.addEventListener("load", function() {
     const write = document.querySelector(".write_search > i:first-child");
     const modal = document.querySelector("#modal");
     const xMark = document.querySelector(".x_mark_btn");
+    const writeBtn = document.querySelector(".register_btn");
 
     joinBtn.addEventListener("click", function() {
         window.location.href = "./terms_page.html";
@@ -66,6 +67,7 @@ window.addEventListener("load", function() {
             };
 
             localStorage.setItem("token", data.token);
+            localStorage.setItem("id", data.data.id);
             location.reload();
 
         } catch (error) {
@@ -113,6 +115,7 @@ window.addEventListener("load", function() {
     // 로그아웃
     logoutBtn.addEventListener("click", function() {
         localStorage.removeItem("token");
+        localStorage.removeItem("id");
         location.reload();
     });
 
@@ -122,5 +125,45 @@ window.addEventListener("load", function() {
     });
     xMark.addEventListener("click", function() {
         modal.style.display = "none";
+    });
+
+    // 메모 등록
+    writeBtn.addEventListener("click", async function() {
+        const writer = localStorage.getItem("id");
+        const language = document.querySelector("#language").value;
+        const mean = document.querySelector("#mean").value;
+        const pronunciation = document.querySelector("#pronunciation").value;
+        const reference = document.querySelector("#reference").value;
+        try {
+            const response = await fetch("https://server-rose-one.vercel.app/memo/write", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ 
+                    writer,
+                    language,
+                    mean,
+                    pronunciation,
+                    reference
+                })
+            });
+
+            const data = await response.json();
+            if(!response.ok) {
+                if (response.status === 500) {
+                    sweetAlert("error", data.message);
+                } else {
+                    throw new Error("예상하지 못한 오류가 발생했습니다. 상태 코드: " + response.status);
+                }
+                return;
+            };
+            
+            modal.style.display = "none";
+            window.location.reload(); 
+        } catch (error) {
+            console.error(error);
+            sweetAlert("error", "네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+        };
     });
 });
