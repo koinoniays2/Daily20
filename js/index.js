@@ -51,18 +51,23 @@ window.addEventListener("load", function() {
                     id : id.value.trim(), 
                     password : password.value })
             });
+            // 실패시
+            const data = await response.json();
             if (!response.ok) {
-                const data = await response.json();
-                sweetAlert("error", "아이디 또는 비밀번호를 확인해 주세요.");
-                throw new Error(data.message);
+                if (response.status === 400 || response.status === 401 || response.status === 500) {
+                    sweetAlert("error", data.message);
+                } else {
+                    throw new Error("예상하지 못한 오류가 발생했습니다. 상태 코드: " + response.status);
+                }
+                return;
             };
 
-            const data = await response.json();
             localStorage.setItem("token", data.token);
             location.reload();
 
         } catch (error) {
             console.error(error);
+            sweetAlert("error", "네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
         }
     });
 

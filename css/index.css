@@ -149,12 +149,12 @@
 .user_wrapper::-webkit-scrollbar {
     display: none;
 } */
-.tool_bar {
+.tool_box {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.tool_bar i {
+.tool_box i {
     color: #F6F6F6;
     cursor: pointer;
 }
@@ -167,17 +167,17 @@
     padding: 0.5rem 0;
 }
 
-.check_bar {
+.check_bar_box {
     display: flex;
     justify-content: space-between;
 }
-.check_bar input {
+.check_bar_box input {
     display: none;
 }
-.check_bar label {
+.check_bar_box label {
     color: #F6F6F6;
 }
-.check_bar i {
+.check_bar_box i {
     color: #C2C2C2;
 }
 .order_check_box {
