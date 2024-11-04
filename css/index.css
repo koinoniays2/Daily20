@@ -241,3 +241,21 @@
     border-radius: 6px;
     color: #F6F6F6;
 }
+
+/* -------------------------------------------------- */
+
+.memo_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 3rem;
+}
+.memo_wrapper div {
+    color: #F6F6F6;
+}
+.memo_wrapper .memo_checkbox {
+    display: none;
+}
+.memo_wrapper i {
+    color: #C2C2C2;
+}

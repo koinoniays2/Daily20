@@ -1,4 +1,4 @@
-window.addEventListener("load", function() {
+window.addEventListener("load", async function() {
     sessionStorage.removeItem("termsAgree");
     
     // const menu = document.querySelector(".menu");
@@ -33,12 +33,6 @@ window.addEventListener("load", function() {
         });
     };
 
-    // 로그인 시 화면
-    const token = localStorage.getItem("token");
-    userContainer.style.display = token ? "block" : "none";
-    loginContainer.style.display = token ? "none" : "block";
-    // menu.style.display = token ? "block" : "none";
-
     // 로그인
     loginBtn.addEventListener("click", async function() {
         if (!id.value.trim() || !password.value) {
@@ -67,7 +61,6 @@ window.addEventListener("load", function() {
             };
 
             localStorage.setItem("token", data.token);
-            localStorage.setItem("id", data.data.id);
             location.reload();
 
         } catch (error) {
@@ -75,6 +68,107 @@ window.addEventListener("load", function() {
             sweetAlert("error", "네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
         }
     });
+
+    
+    // 로그인 시 화면
+    const token = localStorage.getItem("token");
+    userContainer.style.display = token ? "block" : "none";
+    loginContainer.style.display = token ? "none" : "block";
+    // menu.style.display = token ? "block" : "none";
+
+    // 데이터 불러오기
+    if (token) {
+        try {
+            const response = await fetch("https://server-rose-one.vercel.app/memo/list", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`  // 토큰 포함
+                }
+            });
+    
+            const data = await response.json(); 
+            if (!response.ok) {
+                if (response.status === 401 || response.status === 500) {
+                    sweetAlert("error", data.message);
+                } else {
+                    throw new Error("예상하지 못한 오류가 발생했습니다. 상태 코드: " + response.status);
+                };
+                return;
+            }
+    
+            console.log(data); 
+
+            // 메모 뿌리기
+            const contents = document.querySelector(".memo_wrapper");
+            if(data.result) {
+                data.memos.forEach((item, index) => {
+                    const memoBox = document.createElement("div");
+                    memoBox.className = `memo_${index}_box`;
+
+                    // 체크박스
+                    const checkDiv = document.createElement("div");
+                    const checkInput = document.createElement("input");
+                    checkInput.type = "checkbox";
+                    checkInput.id = `memo_${index}`;
+                    checkInput.classList.add("memo_checkbox");
+
+                    const checkInputLabel = document.createElement("label");
+                    checkInputLabel.htmlFor = `memo_${index}`;
+                    checkInputLabel.innerHTML = `<i class="fa-solid fa-circle-check"></i>`;
+
+                    const checkIcon = checkInputLabel.querySelector("i");
+                     // 개별 체크박스 선택 시 아이콘 색상 변경
+                    checkInput.addEventListener("change", () => {
+                        checkIcon.style.color = checkInput.checked ? "#E7852C" : "#C2C2C2";
+                    });
+                    checkDiv.appendChild(checkInput);
+                    checkDiv.appendChild(checkInputLabel);
+                    memoBox.appendChild(checkDiv);
+
+                    // 컨텐츠
+                    const fields = [
+                        { label: "원어", value: item.language },
+                        { label: "뜻", value: item.mean },
+                        { label: "발음", value: item.pronunciation },
+                        { label: "참고", value: item.reference }
+                    ];
+                    fields.forEach((field) => {
+                        const div = document.createElement("div");
+                        const span = document.createElement("span");
+                        const p = document.createElement("p");
+                
+                        span.textContent = field.label;
+                        p.textContent = field.value;
+                
+                        div.appendChild(span);
+                        div.appendChild(p);
+                        memoBox.appendChild(div);
+                    });
+                    contents.appendChild(memoBox);
+                });
+                // 전체 체크박스 기능
+                allCheck.addEventListener("change", () => {
+                    const checkboxes = document.querySelectorAll(".memo_checkbox");
+                    checkboxes.forEach((checkbox) => {
+                        checkbox.checked = allCheck.checked; // 전체 체크 상태에 따라 개별 체크박스 선택/해제
+
+                        // 각 체크박스의 아이콘 색상 변경
+                        const icon = document.querySelector(`label[for="${checkbox.id}"] i`);
+                        icon.style.color = checkbox.checked ? "#E7852C" : "#C2C2C2";
+                    });
+                    
+                });
+            } else {
+                const div = document.createElement("div");
+                div.textContent = data.message;
+                contents.appendChild(div);
+            };
+        } catch (error) {
+            console.error(error);
+            sweetAlert("error", "네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+        };
+    };
 
     // 정렬
     const checkboxes = [
@@ -129,7 +223,6 @@ window.addEventListener("load", function() {
 
     // 메모 등록
     writeBtn.addEventListener("click", async function() {
-        const writer = localStorage.getItem("id");
         const language = document.querySelector("#language").value;
         const mean = document.querySelector("#mean").value;
         const pronunciation = document.querySelector("#pronunciation").value;
@@ -138,10 +231,10 @@ window.addEventListener("load", function() {
             const response = await fetch("https://server-rose-one.vercel.app/memo/write", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify({ 
-                    writer,
                     language,
                     mean,
                     pronunciation,
@@ -151,7 +244,7 @@ window.addEventListener("load", function() {
 
             const data = await response.json();
             if(!response.ok) {
-                if (response.status === 500) {
+                if (response.status === 500 || response.status === 401) {
                     sweetAlert("error", data.message);
                 } else {
                     throw new Error("예상하지 못한 오류가 발생했습니다. 상태 코드: " + response.status);
