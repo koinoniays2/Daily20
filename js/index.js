@@ -15,6 +15,9 @@ window.addEventListener("load", function() {
     const textOrderIcon = document.querySelector(".text_check > i");
     const allCheck = document.querySelector("#all_check");
     const allCheckIcon = document.querySelector(".all_check_box i");
+    const write = document.querySelector(".write_search > i:first-child");
+    const modal = document.querySelector("#modal");
+    const xMark = document.querySelector(".x_mark_btn");
 
     joinBtn.addEventListener("click", function() {
         window.location.href = "./terms_page.html";
@@ -111,5 +114,13 @@ window.addEventListener("load", function() {
     logoutBtn.addEventListener("click", function() {
         localStorage.removeItem("token");
         location.reload();
+    });
+
+    // 모달창 오픈
+    write.addEventListener("click", function() {
+        modal.style.display = "flex";
+    });
+    xMark.addEventListener("click", function() {
+        modal.style.display = "none";
     });
 });

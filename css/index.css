@@ -28,6 +28,18 @@
     width: 100%;
     height: fit-content;
 }
+/* 녹색 부분 */
+.wrapper {
+    width: 100%;
+    padding: 1rem;
+    padding-bottom: 3rem;
+    border: 1px solid black;
+    background-color: #62A475;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
 .login_container > img {
     position: absolute;
 }
@@ -43,17 +55,7 @@
 .login_container > img:nth-child(4) {
     bottom: 0.75rem; right: 3rem;
 }
-/* 녹색 부분 */
-.wrapper {
-    width: 100%;
-    padding: 1rem;
-    padding-bottom: 3rem;
-    border: 1px solid black;
-    background-color: #62A475;
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
-}
+
 /* 포스트잇 */
 .postit_box {
     display: flex;
@@ -183,4 +185,59 @@
 .order_check_box {
     display: flex;
     gap: 0.5rem;
+}
+
+/* -------------------------------------------------- */
+
+/* 모달 */
+#modal {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0; left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 0 1rem;
+}
+.modal_wrapper {
+    gap: 1.5rem;
+    padding: 1rem;
+}
+.modal_wrapper div {
+    width: 100%;
+    border-bottom: 1px solid #F4CE7C;
+}
+.modal_wrapper div:first-child, .modal_wrapper div:last-child {
+    border: none;
+    text-align: right;
+}
+.x_mark_box {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.x_mark_box button {
+    color: #F6F6F6;
+}
+.modal_wrapper > .textarea_box {
+    border: 1px solid #F4CE7C;
+}
+.modal_wrapper input, .modal_wrapper textarea {
+    padding: 0.5rem;
+    color: #F4CE7C;
+}
+.modal_wrapper input::placeholder, .modal_wrapper textarea::placeholder {
+    color: #F4CE7C;
+    opacity: 0.7;
+}
+.modal_wrapper textarea {
+    width: 100%;
+    resize: none;
+}
+.modal_wrapper div:last-child > button {
+    padding: 0.5rem 1rem;
+    background-color: #E7852C;
+    border-radius: 6px;
+    color: #F6F6F6;
 }
