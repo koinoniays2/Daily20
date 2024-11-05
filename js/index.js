@@ -91,27 +91,32 @@ window.addEventListener("load", async function() {
             if (!response.ok) {
                 if (response.status === 401 || response.status === 500) {
                     sweetAlert("error", data.message);
+                } else if (response.status === 403) {
+                    sweetAlert("error", "세션이 만료되었습니다. 다시 로그인해 주세요.");
+                    localStorage.removeItem("token");
+                    window.location.href = "/login";
                 } else {
                     throw new Error("예상하지 못한 오류가 발생했습니다. 상태 코드: " + response.status);
                 };
                 return;
             }
     
-            console.log(data); 
+            // console.log(data); 
 
             // 메모 뿌리기
             const contents = document.querySelector(".memo_wrapper");
             if(data.result) {
                 data.memos.forEach((item, index) => {
                     const memoBox = document.createElement("div");
-                    memoBox.className = `memo_${index}_box`;
+                    memoBox.className = `memo_box box_${index}`;
 
                     // 체크박스
                     const checkDiv = document.createElement("div");
                     const checkInput = document.createElement("input");
                     checkInput.type = "checkbox";
                     checkInput.id = `memo_${index}`;
-                    checkInput.classList.add("memo_checkbox");
+                    checkDiv.classList.add("memo_check_box");
+                    checkInput.classList.add("memo_check");
 
                     const checkInputLabel = document.createElement("label");
                     checkInputLabel.htmlFor = `memo_${index}`;
@@ -133,6 +138,13 @@ window.addEventListener("load", async function() {
                         { label: "발음", value: item.pronunciation },
                         { label: "참고", value: item.reference }
                     ];
+                    const updateDiv = document.createElement("div");
+                    const updateBtn = document.createElement("button");
+                    updateBtn.textContent = "수정";
+                    updateDiv.classList.add("update_btn_box");
+                    updateBtn.classList.add("update_btn");
+                    updateBtn.type = "button";
+                    updateDiv.appendChild(updateBtn);
                     fields.forEach((field) => {
                         const div = document.createElement("div");
                         const span = document.createElement("span");
@@ -143,13 +155,15 @@ window.addEventListener("load", async function() {
                 
                         div.appendChild(span);
                         div.appendChild(p);
+                        updateDiv.appendChild(updateBtn);
                         memoBox.appendChild(div);
                     });
                     contents.appendChild(memoBox);
+                    memoBox.appendChild(updateDiv);
                 });
                 // 전체 체크박스 기능
                 allCheck.addEventListener("change", () => {
-                    const checkboxes = document.querySelectorAll(".memo_checkbox");
+                    const checkboxes = document.querySelectorAll(".memo_check");
                     checkboxes.forEach((checkbox) => {
                         checkbox.checked = allCheck.checked; // 전체 체크 상태에 따라 개별 체크박스 선택/해제
 
@@ -161,6 +175,7 @@ window.addEventListener("load", async function() {
                 });
             } else {
                 const div = document.createElement("div");
+                div.classList.add("empty_memo");
                 div.textContent = data.message;
                 contents.appendChild(div);
             };

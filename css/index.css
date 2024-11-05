@@ -246,16 +246,39 @@
 
 .memo_wrapper {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */
     padding-top: 3rem;
 }
-.memo_wrapper div {
+.memo_wrapper .memo_box {
+    padding: 0.5rem 0;
+}
+.memo_wrapper .memo_check_box {
+    text-align: right;
+}
+.memo_wrapper .memo_check_box input {
+    display: none;
+}
+.memo_wrapper p {
     color: #F6F6F6;
 }
-.memo_wrapper .memo_checkbox {
-    display: none;
+.memo_wrapper span {
+    color: #F4CE7C;
 }
 .memo_wrapper i {
     color: #C2C2C2;
+}
+.update_btn_box {
+    padding: 1rem 0;
+}
+.update_btn {
+    background-color: #E7852C;
+    padding: 0.25rem 1rem;
+    border-radius: 8px;
+    color: #F6F6F6;
+}
+.empty_memo {
+    font-size: 1.125rem;
+    color: #F4CE7C;
 }
