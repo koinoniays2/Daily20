@@ -19,12 +19,14 @@ window.addEventListener("load", async function() {
     const modal = document.querySelector("#modal");
     const xMark = document.querySelector(".x_mark_btn");
     const writeBtn = document.querySelector(".register_btn");
+    const deleteBtn = document.querySelector(".trash > i");
 
+    //-------------------- 회원가입 버튼 --------------------
     joinBtn.addEventListener("click", function() {
         window.location.href = "./terms_page.html";
     });
 
-    // sweetAlert
+    //-------------------- sweetAlert 함수 --------------------
     function sweetAlert(icon, text) {
         Swal.fire({
             icon,
@@ -33,9 +35,9 @@ window.addEventListener("load", async function() {
         });
     };
 
-    // 로그인
+    // -------------------- 로그인 요청 --------------------
     loginBtn.addEventListener("click", async function() {
-        if (!id.value.trim() || !password.value) {
+        if (!id.value.trim() || !password.value.trim()) {
             sweetAlert("error", "아이디와 비밀번호를 입력해주세요.");
             return;
         }
@@ -53,49 +55,51 @@ window.addEventListener("load", async function() {
             const data = await response.json();
             if (!response.ok) {
                 if (response.status === 400 || response.status === 401 || response.status === 500) {
+                    // 400 : 아이디/비밀번호 공백 오류, 401 : 아이디, 비밀번호 오류, 500 : 서버 오류
                     sweetAlert("error", data.message);
                 } else {
                     throw new Error("예상하지 못한 오류가 발생했습니다. 상태 코드: " + response.status);
                 }
                 return;
             };
-
-            localStorage.setItem("token", data.token);
+            // 성공시
+            localStorage.setItem("token", data.token); // 토큰 저장
             location.reload();
-
         } catch (error) {
             console.error(error);
             sweetAlert("error", "네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
-        }
+        };
     });
-
     
-    // 로그인 시 화면
+    //-------------------- 로그인 시 화면 --------------------
     const token = localStorage.getItem("token");
     userContainer.style.display = token ? "block" : "none";
     loginContainer.style.display = token ? "none" : "block";
     // menu.style.display = token ? "block" : "none";
 
-    // 데이터 불러오기
-    let isAscDes = false; // 기본 정렬 내림차순
-    let sortType = "date";   // 기본 정렬 기준 날짜
+    //-------------------- 메모 불러오기 --------------------
+    
     let memoData = []; // 데이터 불러오기 후 저장된 메모 리스트
-
+    let isAscDes = false;  // 기본 정렬 내림차순(체크 해제)
+    let sortType = "date"; // 기본 정렬 기준 날짜
+    // -------------------- 토큰이 있을 때만 요청 --------------------
     if (token) {
         try {
             const response = await fetch("https://server-rose-one.vercel.app/memo/list", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`  // 토큰 포함
+                    "Authorization": `Bearer ${token}`  // 토큰 포함 요청
                 }
             });
     
             const data = await response.json(); 
             if (!response.ok) {
                 if (response.status === 401 || response.status === 500) {
+                    // 401 : 토큰 없음, 500 : 서버오류
                     sweetAlert("error", data.message);
                 } else if (response.status === 403) {
+                    // 403 : 토큰 만료
                     localStorage.removeItem("token");
                     Swal.fire({
                         icon: "error",
@@ -124,6 +128,7 @@ window.addEventListener("load", async function() {
         const memoWrapper = document.querySelector(".memo_wrapper");
         memoWrapper.innerHTML = ""; // 기존 메모 초기화
 
+        // 기존 배열을 변경하지 않고 새로운 배열을 만들어서 정렬 작업
         const sortedMemos = [...memoData].sort((a, b) => {
             if (sortType === "date") { // 날짜 기준 정렬
                 if (isAscDes) {
@@ -133,9 +138,9 @@ window.addEventListener("load", async function() {
                 }
             } else if (sortType === "text") { // 문자 기준 정렬
                 if (isAscDes) {
-                    return a.language.localeCompare(b.language); // 오름차순 (문자순)
+                    return a.language.localeCompare(b.language); // 오름차순
                 } else {
-                    return b.language.localeCompare(a.language); // 내림차순 (문자순)
+                    return b.language.localeCompare(a.language); // 내림차순
                 }
             }
         });
@@ -143,19 +148,21 @@ window.addEventListener("load", async function() {
         if(sortedMemos.length > 0) {
             sortedMemos.forEach((item, index) => {
                 const memoBox = document.createElement("div");
-                memoBox.className = `memo_box box_${index}`;
+                memoBox.className = `memo_box`;
+                memoBox.dataset.id = item._id;
 
                 // 체크박스
                 const checkDiv = document.createElement("div");
                 const checkInput = document.createElement("input");
                 const checkInputLabel = document.createElement("label");
-                const checkIcon = checkInputLabel.querySelector("i");
                 checkInput.type = "checkbox";
                 checkInput.id = `memo_${index}`;
+                checkInput.dataset.id = item._id;
                 checkDiv.classList.add("memo_check_box");
                 checkInput.classList.add("memo_check");
                 checkInputLabel.htmlFor = `memo_${index}`;
                 checkInputLabel.innerHTML = `<i class="fa-solid fa-circle-check"></i>`;
+                const checkIcon = checkInputLabel.querySelector("i");
                 // 개별 체크박스 선택 시 아이콘 색상 변경
                 checkInput.addEventListener("change", () => {
                     checkIcon.style.color = checkInput.checked ? "#E7852C" : "#C2C2C2";
@@ -249,22 +256,26 @@ window.addEventListener("load", async function() {
         allCheckIcon.style.color = allCheck.checked ? "#E7852C" : "#C2C2C2";
     });
 
-    // 로그아웃
+    //-------------------- 로그아웃 --------------------
     logoutBtn.addEventListener("click", function() {
         localStorage.removeItem("token");
-        localStorage.removeItem("id");
         location.reload();
     });
 
-    // 모달창 오픈
+    //-------------------- 모달창 --------------------
     write.addEventListener("click", function() {
         modal.style.display = "flex";
+        // 입력 필드 초기화
+        document.querySelector("#language").value = "";
+        document.querySelector("#mean").value = "";
+        document.querySelector("#pronunciation").value = "";
+        document.querySelector("#reference").value = "";
     });
     xMark.addEventListener("click", function() {
         modal.style.display = "none";
     });
-
-    // 메모 등록
+    
+    // -------------------- 메모 등록 --------------------
     writeBtn.addEventListener("click", async function() {
         const language = document.querySelector("#language").value;
         const mean = document.querySelector("#mean").value;
@@ -287,16 +298,71 @@ window.addEventListener("load", async function() {
 
             const data = await response.json();
             if(!response.ok) {
-                if (response.status === 500 || response.status === 401) {
+                if (response.status === 401 || response.status === 500) {
+                    // 401 : 토큰 없음, 500 : 서버오류
+                    sweetAlert("error", data.message);
+                } else if (response.status === 403) {
+                    // 403 : 토큰 만료
+                    localStorage.removeItem("token");
+                    Swal.fire({
+                        icon: "error",
+                        text: "세션이 만료되었습니다. 다시 로그인해 주세요.",
+                        confirmButtonColor: "#9FA9D8"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "index.html";
+                        };
+                    });
+                } else {
+                    throw new Error("예상하지 못한 오류가 발생했습니다. 상태 코드: " + response.status);
+                };
+                return;
+            };
+
+            memoData.push(data.data); 
+            renderMemos();
+            modal.style.display = "none";
+
+        } catch (error) {
+            console.error(error);
+            sweetAlert("error", "네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+        };
+    });
+    // -------------------- 메모 삭제 --------------------
+    deleteBtn.addEventListener("click", async () => {
+         // 체크된 항목의 ID를 수집
+        const selectedIds = Array.from(document.querySelectorAll(".memo_check:checked")).map(checkbox => checkbox.dataset.id);
+
+        if (selectedIds.length === 0) {
+            sweetAlert("info", "삭제할 메모를 선택해주세요.");
+            return;
+        };
+        try {
+            const response = await fetch("http://localhost:3000/memo/delete", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({ ids: selectedIds })
+            });
+    
+            const data = await response.json();
+            if (!response.ok) {
+                if (response.status === 400 || response.status === 500) {
+                    // 400 : 선택 공백 오류, 비밀번호 오류, 500 : 서버 오류
                     sweetAlert("error", data.message);
                 } else {
                     throw new Error("예상하지 못한 오류가 발생했습니다. 상태 코드: " + response.status);
                 }
                 return;
             };
-            
-            modal.style.display = "none";
-            window.location.reload(); 
+            // 삭제 성공 후, 화면에서 체크된 메모 삭제
+            selectedIds.forEach(id => {
+                const memoElement = document.querySelector(`.memo_box[data-id="${id}"]`);
+                if (memoElement) memoElement.remove();
+            });
+            sweetAlert("success", data.message);
         } catch (error) {
             console.error(error);
             sweetAlert("error", "네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
