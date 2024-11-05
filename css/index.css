@@ -269,14 +269,20 @@
 .memo_wrapper i {
     color: #C2C2C2;
 }
-.update_btn_box {
+.update_btn_date_box {
     padding: 1rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 .update_btn {
     background-color: #E7852C;
     padding: 0.25rem 1rem;
     border-radius: 8px;
     color: #F6F6F6;
+}
+.update_btn_date_box > p {
+    color: #D1D1D1;
 }
 .empty_memo {
     font-size: 1.125rem;

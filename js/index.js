@@ -108,10 +108,10 @@ window.addEventListener("load", async function() {
                 return;
             }
     
-            // console.log(data); 
+            console.log(data); 
 
             // 메모 뿌리기
-            const contents = document.querySelector(".memo_wrapper");
+            const memoWrapper = document.querySelector(".memo_wrapper");
             if(data.result) {
                 data.memos.forEach((item, index) => {
                     const memoBox = document.createElement("div");
@@ -120,16 +120,14 @@ window.addEventListener("load", async function() {
                     // 체크박스
                     const checkDiv = document.createElement("div");
                     const checkInput = document.createElement("input");
+                    const checkInputLabel = document.createElement("label");
+                    const checkIcon = checkInputLabel.querySelector("i");
                     checkInput.type = "checkbox";
                     checkInput.id = `memo_${index}`;
                     checkDiv.classList.add("memo_check_box");
                     checkInput.classList.add("memo_check");
-
-                    const checkInputLabel = document.createElement("label");
                     checkInputLabel.htmlFor = `memo_${index}`;
                     checkInputLabel.innerHTML = `<i class="fa-solid fa-circle-check"></i>`;
-
-                    const checkIcon = checkInputLabel.querySelector("i");
                      // 개별 체크박스 선택 시 아이콘 색상 변경
                     checkInput.addEventListener("change", () => {
                         checkIcon.style.color = checkInput.checked ? "#E7852C" : "#C2C2C2";
@@ -145,13 +143,6 @@ window.addEventListener("load", async function() {
                         { label: "발음", value: item.pronunciation },
                         { label: "참고", value: item.reference }
                     ];
-                    const updateDiv = document.createElement("div");
-                    const updateBtn = document.createElement("button");
-                    updateBtn.textContent = "수정";
-                    updateDiv.classList.add("update_btn_box");
-                    updateBtn.classList.add("update_btn");
-                    updateBtn.type = "button";
-                    updateDiv.appendChild(updateBtn);
                     fields.forEach((field) => {
                         const div = document.createElement("div");
                         const span = document.createElement("span");
@@ -162,11 +153,23 @@ window.addEventListener("load", async function() {
                 
                         div.appendChild(span);
                         div.appendChild(p);
-                        updateDiv.appendChild(updateBtn);
                         memoBox.appendChild(div);
                     });
-                    contents.appendChild(memoBox);
-                    memoBox.appendChild(updateDiv);
+                    // 수정버튼, 날짜
+                    const updateDateDiv = document.createElement("div");
+                    const updateBtn = document.createElement("button");
+                    const date = document.createElement("p");
+                    const formattedDate = new Date(item.createdAt).toISOString().split("T")[0];
+                    updateDateDiv.classList.add("update_btn_date_box");
+                    updateBtn.classList.add("update_btn");
+                    updateBtn.type = "button";
+                    updateBtn.textContent = "수정";
+                    date.textContent = formattedDate;
+                    updateDateDiv.appendChild(updateBtn);
+                    updateDateDiv.appendChild(date);
+                    memoBox.appendChild(updateDateDiv);
+                    // 최종 추가
+                    memoWrapper.appendChild(memoBox);
                 });
                 // 전체 체크박스 기능
                 allCheck.addEventListener("change", () => {
@@ -184,7 +187,7 @@ window.addEventListener("load", async function() {
                 const div = document.createElement("div");
                 div.classList.add("empty_memo");
                 div.textContent = data.message;
-                contents.appendChild(div);
+                memoWrapper.appendChild(div);
             };
         } catch (error) {
             console.error(error);
