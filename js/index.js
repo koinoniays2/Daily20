@@ -92,9 +92,16 @@ window.addEventListener("load", async function() {
                 if (response.status === 401 || response.status === 500) {
                     sweetAlert("error", data.message);
                 } else if (response.status === 403) {
-                    sweetAlert("error", "세션이 만료되었습니다. 다시 로그인해 주세요.");
                     localStorage.removeItem("token");
-                    window.location.href = "/login";
+                    Swal.fire({
+                        icon: "error",
+                        text: "세션이 만료되었습니다. 다시 로그인해 주세요.",
+                        confirmButtonColor: "#9FA9D8"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "index.html";
+                        };
+                    });
                 } else {
                     throw new Error("예상하지 못한 오류가 발생했습니다. 상태 코드: " + response.status);
                 };
