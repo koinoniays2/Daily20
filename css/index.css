@@ -228,7 +228,8 @@
 }
 .modal_wrapper div:first-child, .modal_wrapper div:last-child {
     border: none;
-    text-align: right;
+    display: flex;
+    justify-content: flex-end;
 }
 .x_mark_box {
     font-size: 1.5rem;
@@ -257,6 +258,7 @@
     background-color: #E7852C;
     border-radius: 6px;
     color: #F6F6F6;
+    display: none;
 }
 
 /* -------------------------------------------------- */

@@ -22,7 +22,7 @@ window.addEventListener("load", async function() {
     const deleteBtn = document.querySelector(".trash > i");
     const memoWrapper = document.querySelector(".memo_wrapper");
     const searchInput = document.querySelector("#search");
-    const searchBtn = document.querySelector(".search_box > i");
+    const updateInsertBtn = document.querySelector(".update_insert_btn");
 
     //-------------------- 회원가입 버튼 --------------------
     joinBtn.addEventListener("click", function() {
@@ -217,6 +217,7 @@ window.addEventListener("load", async function() {
             const formattedDate = new Date(item.createdAt).toISOString().split("T")[0];
             updateDateDiv.classList.add("update_btn_date_box");
             updateBtn.classList.add("update_btn");
+            updateBtn.dataset.id = item._id;
             updateBtn.type = "button";
             updateBtn.textContent = "수정";
             date.textContent = formattedDate;
@@ -277,6 +278,7 @@ window.addEventListener("load", async function() {
 
     //-------------------- 모달창 --------------------
     write.addEventListener("click", function() {
+        writeBtn.style.display = "block";
         modal.style.display = "flex";
         // 입력 필드 초기화
         document.querySelector("#language").value = "";
@@ -286,8 +288,9 @@ window.addEventListener("load", async function() {
     });
     xMark.addEventListener("click", function() {
         modal.style.display = "none";
+        writeBtn.style.display = "none";
+        updateInsertBtn.style.display = "none";
     });
-    
     // -------------------- 메모 등록 --------------------
     writeBtn.addEventListener("click", async function() {
         const language = document.querySelector("#language").value;
@@ -332,9 +335,10 @@ window.addEventListener("load", async function() {
                 return;
             };
 
-            memoData.push(data.data); 
+            filteredData.push(data.data); 
             renderMemos();
             modal.style.display = "none";
+            writeBtn.style.display = "none";
 
         } catch (error) {
             console.error(error);
@@ -393,5 +397,80 @@ window.addEventListener("load", async function() {
             );
         });
         renderMemos(); // 필터링된 데이터로 렌더링
+    });
+    // -------------------- 수정 --------------------
+    // 이벤트 버블링
+    memoWrapper.addEventListener("click", (event) => {
+        // 클릭된 요소가 수정 버튼인지 확인
+        if (event.target.classList.contains("update_btn")) {
+            const memoId = event.target.dataset.id;  // 수정 버튼의 data-id 값 가져오기
+            modal.style.display = "flex";
+            updateInsertBtn.style.display = "block";
+            
+            const updateMemoBox = document.querySelector(`[data-id="${memoId}"]`);
+
+            const language = document.querySelector("#language");
+            const mean = document.querySelector("#mean");
+            const pronunciation = document.querySelector("#pronunciation");
+            const reference = document.querySelector("#reference");
+
+            language.value = updateMemoBox.querySelectorAll("div")[1].querySelector("p").textContent;;
+            mean.value = updateMemoBox.querySelectorAll("div")[2].querySelector("p").textContent;
+            pronunciation.value = updateMemoBox.querySelectorAll("div")[3].querySelector("p").textContent;
+            reference.value = updateMemoBox.querySelectorAll("div")[4].querySelector("p").textContent;
+            
+            updateInsertBtn.addEventListener("click", async () => {
+                try {
+                    const response = await fetch("https://server-rose-one.vercel.app/memo/update", {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ 
+                            _id : memoId,
+                            language : language.value,
+                            mean : mean.value,
+                            pronunciation : pronunciation.value,
+                            reference : reference.value
+                        })
+                    });
+                    const data = await response.json();
+                    if (!response.ok) {
+                        if (response.status === 404 || response.status === 500) {
+                            sweetAlert("error", data.message);
+                        } else if (response.status === 403) {
+                            // 403 : 토큰 만료
+                            localStorage.removeItem("token");
+                            Swal.fire({
+                                icon: "error",
+                                text: "세션이 만료되었습니다. 다시 로그인해 주세요.",
+                                confirmButtonColor: "#9FA9D8"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "index.html";
+                                };
+                            })
+                        } else {
+                            throw new Error("예상하지 못한 오류가 발생했습니다. 상태 코드: " + response.status);
+                        }
+                        return;
+                    };
+                    // 업데이트된 내용을 DOM에 적용
+                    updateMemoBox.querySelectorAll("div")[1].querySelector("p").textContent = language.value;
+                    updateMemoBox.querySelectorAll("div")[2].querySelector("p").textContent = mean.value;
+                    updateMemoBox.querySelectorAll("div")[3].querySelector("p").textContent = pronunciation.value;
+                    updateMemoBox.querySelectorAll("div")[4].querySelector("p").textContent = reference.value;
+
+                    sweetAlert("success", "메모가 성공적으로 수정되었습니다.");
+                    modal.style.display = "none";
+                    updateInsertBtn.style.display = "none";
+
+                } catch(error) {
+                    console.error(error);
+                    sweetAlert("error", "네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+                }
+            });
+        };
     });
 });
