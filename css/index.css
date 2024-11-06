@@ -160,18 +160,35 @@
     color: #F6F6F6;
     cursor: pointer;
 }
-.write_search {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
 .line {
     padding: 0.5rem 0;
+}
+.search_box {
+    padding: 0.5rem 0;
+    border: 1px solid #F4CE7C;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+.search_box #search {
+    padding: 0 0.5rem;
+    color: #F6F6F6;
+}
+.search_box #search::placeholder {
+    color: #C2C2C2;
+}
+.search_box i {
+    color: #F6F6F6;
+    position: absolute;
+    right: 0.5rem;
+    cursor: pointer;
 }
 
 .check_bar_box {
     display: flex;
     justify-content: space-between;
+    padding-top: 0.5rem;
 }
 .check_bar_box input {
     display: none;
@@ -249,7 +266,7 @@
     flex-direction: column;
     justify-content: center;
     /* align-items: center; */
-    padding-top: 3rem;
+    padding-top: 2rem;
 }
 .memo_wrapper .memo_box {
     padding: 0.5rem 0;

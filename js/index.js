@@ -15,13 +15,14 @@ window.addEventListener("load", async function() {
     const textOrderIcon = document.querySelector(".text_check > i");
     const allCheck = document.querySelector("#all_check");
     const allCheckIcon = document.querySelector(".all_check_box i");
-    const write = document.querySelector(".write_search > i:first-child");
-    const search = document.querySelector(".write_search > i:nth-child(2)");
+    const write = document.querySelector(".write > i");
     const modal = document.querySelector("#modal");
     const xMark = document.querySelector(".x_mark_btn");
     const writeBtn = document.querySelector(".register_btn");
     const deleteBtn = document.querySelector(".trash > i");
     const memoWrapper = document.querySelector(".memo_wrapper");
+    const searchInput = document.querySelector("#search");
+    const searchBtn = document.querySelector(".search_box > i");
 
     //-------------------- 회원가입 버튼 --------------------
     joinBtn.addEventListener("click", function() {
@@ -82,6 +83,7 @@ window.addEventListener("load", async function() {
     //-------------------- 메모 불러오기 --------------------
     
     let memoData = []; // 데이터 불러오기 후 저장된 메모 리스트
+    let filteredData = []; // 필터 데이터
     let isAscDes = false;  // 기본 정렬 내림차순(체크 해제)
     let sortType = "date"; // 기본 정렬 기준 날짜
     // -------------------- 토큰이 있을 때만 요청 --------------------
@@ -125,6 +127,7 @@ window.addEventListener("load", async function() {
                 memoWrapper.appendChild(div);
             } else {
                 memoData = data.memos;  // 메모 데이터 저장 (정렬을 위해)
+                filteredData = [...memoData];
                 renderMemos();
             }
 
@@ -134,11 +137,11 @@ window.addEventListener("load", async function() {
         };
     };
     // 메모 렌더링 함수
-    function renderMemos() {
+    function renderMemos(data = filteredData) {
         memoWrapper.innerHTML = ""; // 기존 메모 초기화
 
         // 기존 배열을 변경하지 않고 새로운 배열을 만들어서 정렬 작업
-        const sortedMemos = [...memoData].sort((a, b) => {
+        const sortedMemos = [...data].sort((a, b) => {
             if (sortType === "date") { // 날짜 기준 정렬
                 if (isAscDes) {
                     return new Date(a.createdAt) - new Date(b.createdAt); // 오름차순
@@ -379,7 +382,16 @@ window.addEventListener("load", async function() {
         };
     });
     // -------------------- 검색 --------------------
-    search.addEventListener("click", () => {
-
+    searchInput.addEventListener("input", () => {
+        const query = searchInput.value.trim().toLowerCase(); // 검색어 소문자로 변환
+        filteredData = memoData.filter(item => {
+            return (
+                item.language.toLowerCase().includes(query) ||
+                item.mean.toLowerCase().includes(query) ||
+                item.pronunciation.toLowerCase().includes(query) ||
+                item.reference.toLowerCase().includes(query)
+            );
+        });
+        renderMemos(); // 필터링된 데이터로 렌더링
     });
 });
