@@ -361,6 +361,11 @@ window.addEventListener("load", async function() {
             selectedIds.forEach(id => {
                 const memoElement = document.querySelector(`.memo_box[data-id="${id}"]`);
                 if (memoElement) memoElement.remove();
+                // filteredData 배열에서도 삭제된 메모를 제거
+                const index = filteredData.findIndex(memo => memo._id === id);
+                if (index > -1) {
+                    filteredData.splice(index, 1);
+                };
             });
             sweetAlert("success", data.message);
         } catch (error) {
