@@ -368,6 +368,12 @@ window.addEventListener("load", async function() {
                 };
             });
             sweetAlert("success", data.message);
+            if(filteredData.length === 0) {
+                const div = document.createElement("div");
+                div.classList.add("empty_memo");
+                div.textContent = "등록된 메모가 없습니다.";
+                memoWrapper.appendChild(div);
+            };
         } catch (error) {
             console.error(error);
             sweetAlert("error", "네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
